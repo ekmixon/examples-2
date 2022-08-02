@@ -23,12 +23,12 @@ def main():
 
         # read header line and print it to stderr
         line = sys.stdin.readline()
-        write_stderr('EVENT: ' + line)
+        write_stderr(f'EVENT: {line}')
 
         # read event payload and print it to stderr
         headers = dict([x.split(':') for x in line.split()])
         data = sys.stdin.read(int(headers['len']))
-        write_stderr('DATA: ' + data + '\n')
+        write_stderr(f'DATA: {data}' + '\n')
 
         # filter only envoy process
         parsed_data = dict([x.split(':') for x in data.split()])
@@ -55,10 +55,10 @@ def main():
         try:
             with open('/run/supervisord.pid', 'r') as pidfile:
                 pid = int(pidfile.readline())
-            write_stderr('Killing supervisord with pid: ' + str(pid) + '\n')
+            write_stderr(f'Killing supervisord with pid: {pid}' + '\n')
             os.kill(pid, signal.SIGQUIT)
         except Exception as e:
-            write_stderr('Could not kill supervisor: ' + str(e) + '\n')
+            write_stderr(f'Could not kill supervisor: {str(e)}' + '\n')
 
         # transition from READY to ACKNOWLEDGED
         write_stdout('RESULT 2\nOK')
